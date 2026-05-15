@@ -28,11 +28,7 @@ CORS는 악의를 가진 해커로부터 인터넷을 보호하기 위해 만들
 
 **과거 수 년 동안, 한 사이트의 스크립트에서 다른 사이트에 있는 콘텐츠에 접근할 수 없다는 제약이 있었습니다.**
 
-<<<<<<< HEAD
 이런 간단하지만 강력한 규칙은 인터넷 보안을 위한 근간이었습니다. 보안 규칙 덕분에 해커가 만든 웹 사이트 `hacker.com`에서 `gmail.com`에 있는 메일 박스에 접근할 수 없던 것이죠. 사람들은 이런 제약 덕분에 안전하게 인터넷을 사용할 수 있었습니다.
-=======
-That simple, yet powerful rule was a foundation of the internet security. E.g. an evil script from website `hacker.com` could not access the user's mailbox at website `gmail.com`. People felt safe.
->>>>>>> upstream/master
 
 그런데 이 당시의 자바스크립트는 네트워크 요청을 보낼 수 있을 만한 메서드를 지원하지 않았습니다. 자바스크립트는 웹 페이지를 꾸미기 위한 토이 랭귀지 수준이었죠.
 
@@ -48,11 +44,7 @@ That simple, yet powerful rule was a foundation of the internet security. E.g. a
 <iframe name="iframe"></iframe>
 */!*
 
-<<<<<<< HEAD
-<!-- 자바스크립트를 사용해 폼을 동적으로 생성하고 보냄-->
-=======
-<!-- a form could be dynamically generated and submitted by JavaScript -->
->>>>>>> upstream/master
+<!-- 자바스크립트로 폼을 동적으로 생성하고 전송 -->
 *!*
 <form target="iframe" method="POST" action="http://another.com/…">
 */!*
@@ -105,15 +97,10 @@ That simple, yet powerful rule was a foundation of the internet security. E.g. a
 
 처음 네트워크 요청 메서드가 등장했을 때엔 크로스 오리진 요청이 불가능했습니다. 하지만 긴 논의 끝에 크로스 오리진 요청을 허용하기로 결정합니다. 대신 크로스 오리진 요청은 서버에서 명시적으로 크로스 오리진 요청을 '허가' 했다는 것을 알려주는 특별한 헤더를 전송받았을 때만 가능하도록 제약을 걸게 됩니다.
 
-<<<<<<< HEAD
 ## 안전한 요청
-=======
-## Safe requests
->>>>>>> upstream/master
 
 크로스 오리진 요청은 크게 두 가지 종류로 구분됩니다.
 
-<<<<<<< HEAD
 1. 안전한 요청(safe request)
 2. 그 외의 요청(안전한 요청이 아닌 요청)
 
@@ -169,7 +156,6 @@ And, unless the server explicitly confirms that with headers, an unsafe request 
 
 이제 개괄적인 설명이 끝났으니 CORS에 대해 좀 더 자세히 알아봅시다.
 
-<<<<<<< HEAD
 ## CORS와 안전한 요청
 
 크로스 오리진 요청을 보낼 경우 브라우저는 항상 `Origin`이라는 헤더를 요청에 추가합니다.
@@ -196,11 +182,6 @@ Origin: https://javascript.info
 보시다시피 `Origin` 헤더엔 요청이 이뤄지는 페이지 경로(/page)가 아닌 오리진(도메인·프로토콜·포트) 정보가 담기게 됩니다.
 
 서버는 요청 헤더에 있는 `Origin`를 검사하고, 요청을 받아들이기로 동의한 상태라면 특별한 헤더 `Access-Control-Allow-Origin`를 응답에 추가합니다. 이 헤더엔 허가된 오리진(위 예시에선 `https://javascript.info`)에 대한 정보나 `*`이 명시됩니다. 이때 응답 헤더 `Access-Control-Allow-Origin`에 오리진 정보나 `*`이 들어있으면 응답은 성공하고 그렇지 않으면 응답이 실패하게 됩니다.
-=======
-As you can see, the `Origin` header contains exactly the origin (domain/protocol/port), without a path.
-
-The server can inspect the `Origin` and, if it agrees to accept such a request, add a special header `Access-Control-Allow-Origin` to the response. That header should contain the allowed origin (in our case `https://javascript.info`), or a star `*`. Then the response is successful, otherwise it's an error.
->>>>>>> upstream/master
 
 이 과정에서 브라우저는 중재인의 역할을 합니다.
 1. 브라우저는 크로스 오리진 요청 시 `Origin`에 값이 제대로 설정, 전송되었는지 확인합니다.
@@ -219,11 +200,7 @@ Access-Control-Allow-Origin: https://javascript.info
 
 ## 응답 헤더
 
-<<<<<<< HEAD
 크로스 오리진 요청이 이뤄진 경우, 자바스크립트는 기본적으로 '안전한' 응답 헤더로 분류되는 헤더에만 접속할 수 있습니다. '안전한' 응답 헤더는 다음과 같습니다.
-=======
-For cross-origin request, by default JavaScript may only access so-called "safe" response headers:
->>>>>>> upstream/master
 
 - `Cache-Control`
 - `Content-Language`
