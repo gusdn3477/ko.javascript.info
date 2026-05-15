@@ -58,6 +58,6 @@
 새로운 내용을 쉽게 추가할 수 있습니다.
 
 ---
-by the Modern JavaScript Tutorial Project Owner, Ilya Kantor(@iliakan)
+모던 JavaScript 튜토리얼 프로젝트 오너, Ilya Kantor(@iliakan)
 
 모던 JavaScript 튜토리얼 한국어 프로젝트 오너, 이보라(@Violet-Bora-Lee)
