@@ -388,8 +388,8 @@ const wss = new ws.Server({noServer: true});
 const clients = new Set();
 
 http.createServer((req, res) => {
-  // here we only handle websocket connections
-  // in real project we'd have some other code here to handle non-websocket requests
+  // 여기서는 웹소켓 연결만 처리합니다.
+  // 실제 프로젝트라면 웹소켓이 아닌 요청을 처리하는 다른 코드도 있을 것입니다.
   wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
 });
 
@@ -397,7 +397,7 @@ function onSocketConnect(ws) {
   clients.add(ws);
 
   ws.on('message', function(message) {
-    message = message.slice(0, 50); // max message length will be 50
+    message = message.slice(0, 50); // 메시지 최대 길이를 50으로 제한합니다.
 
     for(let client of clients) {
       client.send(message);
@@ -411,19 +411,19 @@ function onSocketConnect(ws) {
 ```
 
 
-Here's the working example:
+다음은 실제 동작하는 예시입니다.
 
 [iframe src="chat" height="100" zip]
 
-You can also download it (upper-right button in the iframe) and run it locally. Just don't forget to install [Node.js](https://nodejs.org/en/) and `npm install ws` before running.
+다운로드한 뒤 로컬 환경에서 실행할 수도 있습니다(iframe 오른쪽 위 버튼). 단, 실행 전에 [Node.js](https://nodejs.org/en/)를 설치하고 `npm install ws` 명령어도 꼭 실행해 주세요.
 
 ## Summary
 
 웹소켓은 브라우저와 서버 간에 지속적인 연결을 유지하기 위한 현대적인 방법입니다.
 
-- WebSockets don't have cross-origin limitations.
+- 웹소켓에는 크로스 오리진 제약이 없습니다.
 - 브라우저에서 잘 지원됩니다.
-- Can send/receive strings and binary data.
+- 문자열과 이진 데이터를 주고받을 수 있습니다.
 
 API는 간단합니다.
 
