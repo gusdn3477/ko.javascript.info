@@ -34,40 +34,30 @@
 * 원문에는 없으나 독자의 이해를 돕기 위해 번역자가 추가하는 내용은 문장 중간이나 끝에 `(.....부가설명..... - 옮긴이)` 형태로 부가설명을 추가하도록 합니다.
 * '적∙의를 보이는 것∙들'에 대한 내용은 될 수 있으면 사용하지 않습니다.([링크](https://m.blog.naver.com/ojhnews/220840570533))
 
-<<<<<<< HEAD
-잘못된 번역, 오타 및 기타 개선사항은 [이슈](https://github.com/javascript-tutorial/ko.javascript.info/issues)로 등록 부탁드립니다.
+잘못된 번역, 오타, 빠진 주제 및 기타 개선사항은 [이슈](https://github.com/javascript-tutorial/ko.javascript.info/issues)로 등록 부탁드립니다.
+
+**텍스트는 어떤 편집기로든 수정할 수 있습니다.** 튜토리얼은 이해하기 쉬운 확장된 마크다운 형식을 사용합니다. 사이트에서 어떻게 보이는지 확인하고 싶다면 <https://github.com/javascript-tutorial/server>에서 튜토리얼을 로컬로 실행할 수 있는 서버를 확인하세요.
 
 ## 기여자
 튜토리얼 원문에 기여하신 분들은 <https://javascript.info/about#contributors>에서 확인할 수 있습니다. 한국어 번역에 기여해주신 분들은 <https://ko.javascript.info/about#contributors>에서 확인할 수 있습니다.
+
+## 구조
+
+모든 챕터, 글, 과제는 각각 별도 폴더에 들어 있습니다.
+
+폴더 이름은 `N-url` 형식입니다. 여기서 `N`은 정렬을 위한 숫자이고, `URL`은 자료 제목에 해당하는 URL 일부입니다.
+
+자료의 종류는 폴더 안의 파일로 구분합니다.
+
+  - `index.md`는 챕터를 의미합니다.
+  - `article.md`는 글을 의미합니다.
+  - `task.md`는 과제를 의미합니다. 과제에는 해답 파일인 `solution.md`도 함께 있어야 합니다.
+
+각 파일은 최상위 제목(`# ...`)으로 시작합니다.
+
+새로운 내용을 쉽게 추가할 수 있습니다.
 
 ---
 by the Modern JavaScript Tutorial Project Owner, Ilya Kantor(@iliakan)
 
 모던 JavaScript 튜토리얼 한국어 프로젝트 오너, 이보라(@Violet-Bora-Lee)
-=======
-Something's wrong? A topic is missing? Explain it to people, add it as PR 👏
-
-**You can edit the text in any editor.** The tutorial uses an enhanced "markdown" format, easy to grasp. And if you want to see how it looks on-site, there's a server to run the tutorial locally at <https://github.com/javascript-tutorial/server>.
-
-The list of contributors is available at <https://javascript.info/about#contributors>.
-
-## Structure
-
-Every chapter, article, or task has its folder.
-
-The folder is named like `N-url`, where `N` is a number for the sorting purposes and `URL` is the URL part with the title of the material.
-
-The type of the material is defined by the file inside the folder:
-
-  - `index.md` stands for a chapter
-  - `article.md` stands for an article
-  - `task.md` stands for a task (solution must be provided in `solution.md` file as well)
-
-Each of these files starts from the `# Main header`.
-
-It's very easy to add something new.
-
----  
-♥  
-Ilya Kantor @iliakan
->>>>>>> upstream/master
