@@ -419,26 +419,26 @@ You can also download it (upper-right button in the iframe) and run it locally. 
 
 ## Summary
 
-WebSocket is a modern way to have persistent browser-server connections.
+웹소켓은 브라우저와 서버 간에 지속적인 연결을 유지하기 위한 현대적인 방법입니다.
 
 - WebSockets don't have cross-origin limitations.
-- They are well-supported in browsers.
+- 브라우저에서 잘 지원됩니다.
 - Can send/receive strings and binary data.
 
-The API is simple.
+API는 간단합니다.
 
-Methods:
+메서드:
 - `socket.send(data)`,
 - `socket.close([code], [reason])`.
 
-Events:
+이벤트:
 - `open`,
 - `message`,
 - `error`,
 - `close`.
 
-WebSocket by itself does not include reconnection, authentication and many other high-level mechanisms. So there are client/server libraries for that, and it's also possible to implement these capabilities manually.
+웹소켓 자체에는 재연결, 인증 같은 고수준 메커니즘이 포함되어 있지 않습니다. 이런 기능을 제공하는 클라이언트/서버 라이브러리가 있고, 직접 구현하는 것도 가능합니다.
 
-Sometimes, to integrate WebSocket into existing projects, people run a WebSocket server in parallel with the main HTTP-server, and they share a single database. Requests to WebSocket use `wss://ws.site.com`, a subdomain that leads to the WebSocket server, while `https://site.com` goes to the main HTTP-server.
+기존 프로젝트에 웹소켓을 통합하기 위해 웹소켓 서버를 메인 HTTP 서버와 병렬로 실행하고, 두 서버가 하나의 데이터베이스를 공유하는 방식을 쓰기도 합니다. 웹소켓 요청은 웹소켓 서버로 연결되는 서브도메인인 `wss://ws.site.com`을 사용하고, `https://site.com`은 메인 HTTP 서버로 연결됩니다.
 
-Surely, other ways of integration are also possible.
+물론 다른 통합 방식도 가능합니다.
