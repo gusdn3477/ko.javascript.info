@@ -34,7 +34,7 @@
 * 원문에는 없으나 독자의 이해를 돕기 위해 번역자가 추가하는 내용은 문장 중간이나 끝에 `(.....부가설명..... - 옮긴이)` 형태로 부가설명을 추가하도록 합니다.
 * '적∙의를 보이는 것∙들'에 대한 내용은 될 수 있으면 사용하지 않습니다.([링크](https://m.blog.naver.com/ojhnews/220840570533))
 
-잘못된 번역, 오타, 빠진 주제 및 기타 개선사항은 [이슈](https://github.com/javascript-tutorial/ko.javascript.info/issues)로 등록 부탁드립니다.
+잘못된 번역, 오타, 빠진 주제 및 기타 개선 사항은 [이슈](https://github.com/javascript-tutorial/ko.javascript.info/issues)로 등록 부탁드립니다.
 
 **텍스트는 어떤 편집기로든 수정할 수 있습니다.** 튜토리얼은 이해하기 쉬운 확장된 마크다운 형식을 사용합니다. 사이트에서 어떻게 보이는지 확인하고 싶다면 <https://github.com/javascript-tutorial/server>에서 튜토리얼을 로컬로 실행할 수 있는 서버를 확인하세요.
 
