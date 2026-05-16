@@ -120,27 +120,6 @@ CORS는 악의를 가진 해커로부터 인터넷을 보호하기 위해 만들
 안전한 요청과 그렇지 않은 요청의 근본적인 차이는 **특별한 방법을 사용하지 않고도 `<form>`이나 `<script>`를 사용해 요청을 만들 수 있다는 점**에 있습니다.
 
 아주 오래된 웹 서버라도 안전한 요청은 당연히 처리할 수 있어야 하는 것이죠.
-=======
-1. Safe requests.
-2. All the others.
-
-Safe Requests are simpler to make, so let's start with them.
-
-A request is safe if it satisfies two conditions:
-
-1. [Safe method](https://fetch.spec.whatwg.org/#cors-safelisted-method): GET, POST or HEAD
-2. [Safe headers](https://fetch.spec.whatwg.org/#cors-safelisted-request-header) -- the only allowed custom headers are:
-    - `Accept`,
-    - `Accept-Language`,
-    - `Content-Language`,
-    - `Content-Type` with the value `application/x-www-form-urlencoded`, `multipart/form-data` or `text/plain`.
-
-Any other request is considered "unsafe". For instance, a request with `PUT` method or with an `API-Key` HTTP-header does not fit the limitations.
-
-**The essential difference is that a safe request can be made with a `<form>` or a `<script>`, without any special methods.**
-
-So, even a very old server should be ready to accept a safe request.
->>>>>>> upstream/master
 
 표준이 아닌 헤더가 들어있거나 안전하지 않은 메서드(`DELETE` 등)를 사용한 요청은 안전한 요청이 될 수 없습니다. 아주 오래전에는 자바스크립트를 사용해 이런 요청을 보내는 것이 불가능 했습니다. 따라서 연식이 오래된 서버는 이런 요청을 받으면 '웹 페이지는 이런 요청을 보낼 수 없었기 때문에' 뭔가 특별한 곳에서 요청이 왔을거라 해석했었습니다.
 
@@ -161,13 +140,6 @@ And, unless the server explicitly confirms that with headers, an unsafe request 
 크로스 오리진 요청을 보낼 경우 브라우저는 항상 `Origin`이라는 헤더를 요청에 추가합니다.
 
 `https://javascript.info/page`에서 `https://anywhere.com/request`에 요청을 보낸다고 가정해 봅시다. 헤더는 다음과 같은 형태가 됩니다.
-=======
-## CORS for safe requests
-
-If a request is cross-origin, the browser always adds the `Origin` header to it.
-
-For instance, if we request `https://anywhere.com/request` from `https://javascript.info/page`, the headers will look like:
->>>>>>> upstream/master
 
 ```http
 GET /request
@@ -258,16 +230,7 @@ With such an `Access-Control-Expose-Headers` header, the script is allowed to re
 preflight 요청은 `OPTIONS` 메서드를 사용하고 두 헤더가 함께 들어가며, 본문은 비어있습니다.
 
 - `Access-Control-Request-Method` 헤더 -- 안전하지 않은 요청에서 사용하는 메서드 정보가 담겨있습니다.
-- `Access-Control-Request-Headers` 헤더 -- 안전하지 않은 요청에서 사용하는 헤더 목록이 담겨있습니다. 각 헤더는 쉼표로 구분됩니다.
-=======
-So, to avoid misunderstandings, any "unsafe" request -- that couldn't be done in the old times, the browser does not make such requests right away. First, it sends a preliminary, so-called "preflight" request, to ask for permission.
-
-A preflight request uses the method `OPTIONS`, no body and three headers:
-
-- `Access-Control-Request-Method` header has the method of the unsafe request.
-- `Access-Control-Request-Headers` header provides a comma-separated list of its unsafe HTTP-headers.
-- `Origin` header tells from where the request came. (such as `https://javascript.info`)
->>>>>>> upstream/master
+- `Origin` 헤더 -- 요청이 어디에서 왔는지 알려줍니다. (`https://javascript.info` 등)
 
 안전하지 않은 요청을 허용하기로 협의하였다면 서버는 본문이 비어있고 상태 코드가 200인 응답을 다음과 같은 헤더와 함께 브라우저로 보냅니다.
 
@@ -466,15 +429,8 @@ Access-Control-Allow-Credentials: true
 브라우저 관점에선 크로스 오리진 요청은 안전한(safe) 크로스 오리진 요청과 그렇지 않은 크로스 오리진 요청 두 분류로 나뉩니다.
 
 안전한 요청은 다음 조건을 모두 충족하는 요청입니다.
-- 메서드: GET이나 POST 혹은 HEAD
-- 헤더:
-=======
-From the browser point of view, there are two kinds of cross-origin requests: "safe" and all the others.
-
-"Safe" requests must satisfy the following conditions:
-- Method: GET, POST or HEAD.
-- Headers -- we can set only:
->>>>>>> upstream/master
+- 메서드: GET, POST, HEAD 중 하나
+- 헤더 -- 다음만 설정 가능
     - `Accept`
     - `Accept-Language`
     - `Content-Language`
