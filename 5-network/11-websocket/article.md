@@ -356,14 +356,14 @@ socket.onmessage = function(event) {
 }
 ```
 
-Server-side code is a little bit beyond our scope. Here we'll use Node.js, but you don't have to. Other platforms also have their means to work with WebSocket.
+서버 측 코드는 튜토리얼 범위를 조금 벗어납니다. 여기서는 Node.js를 사용하지만 반드시 Node.js를 써야 하는 것은 아닙니다. 다른 플랫폼도 웹소켓을 다룰 수 있는 방법을 제공합니다.
 
-The server-side algorithm will be:
+서버 측 알고리즘은 다음과 같습니다.
 
-1. Create `clients = new Set()` -- a set of sockets.
-2. For each accepted websocket, add it to the set `clients.add(socket)` and set `message` event listener to get its messages.
-3. When a message is received: iterate over clients and send it to everyone.
-4. When a connection is closed: `clients.delete(socket)`.
+1. `clients = new Set()`을 만듭니다 -- 소켓 집합입니다.
+2. 수락된 각 웹소켓마다, 집합 `clients.add(socket)`에 추가하고 메시지를 받기 위해 `message` 이벤트 리스너를 설정합니다.
+3. 메시지를 받으면: 클라이언트를 순회하며 모두에게 보냅니다.
+4. 커넥션이 종료되면 `clients.delete(socket)`을 호출합니다.
 
 ```js
 const ws = new require('ws');
@@ -401,7 +401,7 @@ function onSocketConnect(ws) {
 
 다운로드한 뒤 로컬 환경에서 실행할 수도 있습니다(iframe 오른쪽 위 버튼). 단, 실행 전에 [Node.js](https://nodejs.org/en/)를 설치하고 `npm install ws` 명령어도 꼭 실행해 주세요.
 
-## Summary
+## 요약
 
 웹소켓은 브라우저와 서버 간에 지속적인 연결을 유지하기 위한 현대적인 방법입니다.
 
