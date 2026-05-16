@@ -76,14 +76,7 @@ socket.onerror = function(error) {
 
 ![](websocket-handshake.svg)
 
-이번엔 `new WebSocket("wss://javascript.info/chat")`을 호출해 최초 요청을 전송했다고 가정하고, 이때의 요청 헤더를 살펴봅시다.
-=======
-During the connection, the browser (using headers) asks the server: "Do you support Websocket?" And if the server replies "yes", then the talk continues in WebSocket protocol, which is not HTTP at all.
-
-![](websocket-handshake.svg)
-
-Here's an example of browser headers for a request made by `new WebSocket("wss://javascript.info/chat")`.
->>>>>>> upstream/master
+다음은 `new WebSocket("wss://javascript.info/chat")`으로 요청을 보낼 때 브라우저가 전송하는 헤더 예시입니다.
 
 ```
 GET /chat
@@ -95,11 +88,11 @@ Sec-WebSocket-Key: Iv8io/9s+lYFgZWcXczP8Q==
 Sec-WebSocket-Version: 13
 ```
 
-<<<<<<< HEAD
-- `Origin` -- 클라이언트 오리진(예시에선 `https://javascript.info`)을 나타냅니다. 서버는 `Origin` 헤더를 보고 어떤 웹사이트와 소켓통신을 할지 결정하기 때문에 Origin 헤더는 웹소켓 통신에 중요한 역할을 합니다. 참고로 웹소켓 객체는 기본적으로 크로스 오리진(cross-origin) 요청을 지원합니다. 웹소켓 통신만을 위한 전용 헤더나 제약도 없습니다. 오래된 서버는 웹소켓 통신을 지원하지 못하기 때문에 웹소켓 통신은 호환성 문제도 없습니다.
+- `Origin` -- 클라이언트 오리진(예시에선 `https://javascript.info`)을 나타냅니다. 웹소켓 객체는 기본적으로 크로스 오리진을 지원합니다. 웹소켓 통신만을 위한 전용 헤더나 별도 제약도 없습니다. 오래된 서버는 어차피 웹소켓을 처리할 수 없으므로 호환성 문제도 없습니다. 하지만 서버가 해당 웹사이트와 웹소켓 통신을 할지 결정할 수 있게 해주므로 `Origin` 헤더는 중요합니다.
 - `Connection: Upgrade` -- 클라이언트  측에서 프로토콜을 바꾸고 싶다는 신호를 보냈다는 것을 나타냅니다.
 - `Upgrade: websocket` -- 클라이언트측에서 요청한 프로토콜은 'websocket'이라는걸 의미합니다.
-- `Sec-WebSocket-Version` -- 웹소켓 프로토콜 버전입니다. 예시에서는 13버전을 사용합니다.
+- `Sec-WebSocket-Key` -- 브라우저가 무작위로 생성한 키로, 서버가 웹소켓 프로토콜을 지원하는지 확인하는 데 사용됩니다. 이후 통신이 프락시에 캐시되지 않도록 무작위 값이 사용됩니다.
+- `Sec-WebSocket-Version` -- 웹소켓 프로토콜 버전입니다. 현재는 13버전을 사용합니다.
 
 ```smart header="웹소켓 핸드셰이크는 모방이 불가능합니다."
 바닐라 자바스크립트로 헤더를 설정하는 건 기본적으로 막혀있기 때문에 `XMLHttpRequest`나 `fetch`로 위 예시와 유사한 헤더를 가진 HTTP 요청을 만들 수 없습니다.
@@ -114,31 +107,19 @@ Connection: Upgrade
 Sec-WebSocket-Accept: hsBlbuDTkk24srzEOTBUlZAlC2g=
 ```
 
-<<<<<<< HEAD
-여기서 `Sec-WebSocket-Accept`값은 특별한 알고리즘을 사용해 만든 `Sec-WebSocket-Key` 입니다. 이 값을 보고 브라우저는 서버가 진짜 웹소켓 프로토콜을 지원하는지 확인합니다.
+여기서 `Sec-WebSocket-Accept` 값은 `Sec-WebSocket-Key`를 특별한 알고리즘으로 변환한 값입니다. 브라우저는 이 값을 보고 서버가 실제로 웹소켓 프로토콜을 지원한다는 것을 확인합니다.
 
-이렇게 핸드셰이크가 끝나면 HTTP 프로토콜이 아닌 웹소켓 프로토콜을 사용해 데이터가 전송되기 시작합니다. 전송이 시작된 후에 어떤일이 일어나는지는 조금 후에 자세히 살펴보겠습니다.
-=======
-Here `Sec-WebSocket-Accept` is `Sec-WebSocket-Key`, recoded using a special algorithm. Upon seeing it, the browser understands that the server really does support the WebSocket protocol.
+이렇게 핸드셰이크가 끝나면 데이터는 웹소켓 프로토콜로 전송됩니다. 데이터 구조인 프레임(frame)은 곧 살펴보겠습니다. 여기서부터는 HTTP가 아닙니다.
 
-Afterwards, the data is transferred using the WebSocket protocol, we'll see its structure ("frames") soon. And that's not HTTP at all.
->>>>>>> upstream/master
+### 확장과 서브 프로토콜 헤더
 
-### Extensions와 Subprotocols 헤더
-
-웹소켓 통신은 `Sec-WebSocket-Extensions`와 `Sec-WebSocket-Protocol` 헤더를 지원합니다. 두 헤더는 각각 웹소켓 프로토콜 기능을 확장(extension)할 때와 서브 프로토콜(subprotocal)을 사용해 데이터를 전송할 때 사용합니다.
+웹소켓 통신은 `Sec-WebSocket-Extensions`와 `Sec-WebSocket-Protocol` 헤더를 지원합니다. 두 헤더는 각각 웹소켓 프로토콜 기능을 확장(extension)할 때와 서브 프로토콜(subprotocol)을 사용해 데이터를 전송할 때 사용합니다.
 
 각 헤더에 대한 예시를 살펴봅시다.
 
-<<<<<<< HEAD
-- `Sec-WebSocket-Extensions: deflate-frame` -- 이 헤더는 브라우저에서 데이터 압축(deflate)을 지원한다는 것을 의미합니다. `Sec-WebSocket-Extensions`은 브라우저에 의해 자동 생성되는데, 그 값엔 데이터 전송과 관련된 무언가나 웹소켓 프로토콜 기능 확장과 관련된 무언가가 나열됩니다.
+- `Sec-WebSocket-Extensions: deflate-frame` -- 이 헤더는 브라우저에서 데이터 압축(deflate)을 지원한다는 것을 의미합니다. 확장(extension)은 데이터 전송과 관련된 기능으로, 웹소켓 프로토콜을 확장합니다. `Sec-WebSocket-Extensions` 헤더는 브라우저에서 자동으로 전송하며, 브라우저가 지원하는 모든 확장 목록이 담깁니다.
 
-- `Sec-WebSocket-Protocol: soap, wamp` -- 이렇게 헤더가 설정되면 평범한 데이터가 아닌 [SOAP](http://en.wikipedia.org/wiki/SOAP)나 WAMP(The WebSocket Application Messaging Protocol) 프로토콜을 준수하는 데이터를 전송하겠다는 것을 의미합니다. 웹소켓에서 지원하는 서브 프로토콜 목록은 [IANA 카탈로그](http://www.iana.org/assignments/websocket/websocket.xml)에서 확인할 수 있습니다. 개발자는 이 헤더를 보고 앞으로 사용하게 될 데이터 포맷을 확인할 수 있습니다.
-=======
-- `Sec-WebSocket-Extensions: deflate-frame` means that the browser supports data compression. An extension is something related to transferring the data, functionality that extends the WebSocket protocol. The header `Sec-WebSocket-Extensions` is sent automatically by the browser, with the list of all extensions it supports.
-
-- `Sec-WebSocket-Protocol: soap, wamp` means that we'd like to transfer not just any data, but the data in [SOAP](https://en.wikipedia.org/wiki/SOAP) or WAMP ("The WebSocket Application Messaging Protocol") protocols. WebSocket subprotocols are registered in the [IANA catalogue](https://www.iana.org/assignments/websocket/websocket.xml). So, this header describes the data formats that we're going to use.
->>>>>>> upstream/master
+- `Sec-WebSocket-Protocol: soap, wamp` -- 평범한 데이터가 아니라 [SOAP](https://en.wikipedia.org/wiki/SOAP)나 WAMP ("The WebSocket Application Messaging Protocol") 프로토콜에 맞는 데이터를 전송하려 한다는 의미입니다. 웹소켓 서브 프로토콜은 [IANA 카탈로그](https://www.iana.org/assignments/websocket/websocket.xml)에 등록되어 있습니다. 개발자는 이 헤더를 보고 앞으로 사용할 데이터 형식을 확인할 수 있습니다.
 
     두 헤더는 `new WebSocket`의 두 번째 매개변수에 값을 넣어서 설정할 수 있습니다. 서브 프로토콜로 SOAP나 WAMP를 사용하고 싶다고 가정해 봅시다. 두 번째 매개변수에 다음과 같이 배열을 넣으면 됩니다.
 
@@ -190,13 +171,9 @@ Sec-WebSocket-Protocol: soap
 
 브라우저 환경에서 개발자는 텍스트나 이진 데이터 프레임만 다루게 됩니다.
 
-이유는 **WebSocket `.send()` 메서드는 텍스트나 이진 데이터만 보낼 수 있기 때문입니다.**
+이유는 **웹소켓 `.send()` 메서드는 텍스트나 이진 데이터만 보낼 수 있기 때문입니다.**
 
-<<<<<<< HEAD
-`socket.send(body)`를 호출할 때, `body`엔 문자열이나 `Blob`, `ArrayBuffer`등의 이진 데이터만 들어갈 수 있습니다. 데이터 종류에 따라 특별히 무언가 세팅을 해줘야 할 필요는 없고, 텍스트나 바이너리 타입의 데이터를 넣어주면 알아서 데이터가 전송됩니다.
-=======
-A call `socket.send(body)` allows `body` in string or a binary format, including `Blob`, `ArrayBuffer`, etc. No settings are required: just send it out in any format.
->>>>>>> upstream/master
+`socket.send(body)`를 호출하면 `body`에는 문자열이나 `Blob`, `ArrayBuffer` 같은 이진 형식을 넣을 수 있습니다. 별도 설정 없이 원하는 형식으로 넣기만 하면 알아서 전송됩니다.
 
 한편, **데이터를 받을 때 텍스트 데이터는 항상 문자열 형태로 옵니다. 이진 데이터를 받을 때엔 `Blob`이나 `ArrayBuffer` 포맷 둘 중 하나를 고를 수 있습니다.**
 
@@ -207,7 +184,7 @@ A call `socket.send(body)` allows `body` in string or a binary format, including
 ```js
 socket.binaryType = "arraybuffer";
 socket.onmessage = (event) => {
-  // event.data는 (텍스트인 경우) 문자열이거나 (이진 데이터인 경우) arraybuffer 입니다.
+  // event.data는 (텍스트인 경우) 문자열이거나 (이진 데이터인 경우) arraybuffer입니다.
 };
 ```
 
@@ -217,11 +194,7 @@ socket.onmessage = (event) => {
 
 앱 쪽에서 `socket.send(data)`를 계속해서 호출할 순 있습니다. 하지만 이렇게 하면 데이터가 메모리에 쌓일 테고(버퍼) 네트워크 속도가 데이터를 송신하기에 충분할 때만 송신될 겁니다.
 
-<<<<<<< HEAD
-`socket.bufferedAmount` 프로퍼티는 송신 대기 중인 현재 시점에서 얼마나 많은 바이트가 메모리에 쌓여있는지 정보를 담고 있습니다.
-=======
-The `socket.bufferedAmount` property stores how many bytes remain buffered at this moment, waiting to be sent over the network.
->>>>>>> upstream/master
+`socket.bufferedAmount` 프로퍼티에는 현재 네트워크로 송신 대기 중이며 버퍼에 쌓여 있는 바이트 수가 저장됩니다.
 
 따라서 `socket.bufferedAmount` 프로퍼티 값을 확인하면 소켓을 전송에 사용할 수 있는지 아닌지를 판단할 수 있습니다.
 
@@ -238,7 +211,7 @@ setInterval(() => {
 
 ## 커넥션 닫기
 
-연결 주체(브라우저나 서버) 중 한쪽에서 커넷션 닫기(close)를 원하는 경우엔 보통 숫자로 된 코드와 문자로 된 사유가 담긴 '커넥션 종료 프레임'을 전송하게 됩니다.
+연결 주체(브라우저나 서버) 중 한쪽에서 커넥션 닫기(close)를 원하는 경우엔 보통 숫자로 된 코드와 문자로 된 사유가 담긴 '커넥션 종료 프레임'을 전송하게 됩니다.
 
 메서드는 다음과 같습니다.
 ```js
@@ -248,15 +221,11 @@ socket.close([code], [reason]);
 - `code` -- 커넥션을 닫을 때 사용하는 특수 코드(옵션)
 - `reason` -- 커넥션 닫기 사유를 설명하는 문자열(옵션)
 
-<<<<<<< HEAD
-그럼 다른 한쪽에 구현된 `close` 이벤트 핸들러에선 다음과 같이 코드와 사유를 확인할 수 있습니다. 
-=======
-Then the other party in the `close` event handler gets the code and the reason, e.g.:
->>>>>>> upstream/master
+그러면 상대방의 `close` 이벤트 핸들러에서 다음과 같이 코드와 사유를 확인할 수 있습니다.
 
 ```js
 // 닫기를 요청한 주체:
-socket.close(1000, "Work complete");
+socket.close(1000, "작업 완료");
 
 // 다른 주체:
 socket.onclose = event => {
@@ -268,31 +237,22 @@ socket.onclose = event => {
 
 가장 많이 사용하는 코드는 다음과 같습니다.
 
-<<<<<<< HEAD
 - `1000` -- 기본값으로 정상 종료를 의미함(`code`값이 주어지지 않을 때 기본 세팅됨)
-- `1006` -- `1000` 같은 코드를 수동으로 설정할 수 없을 때 사용하고, 커넥션이 유실(no close frame)되었음을 의미함
-=======
-- `1000` -- the default, normal closure (used if no `code` supplied),
-- `1006` -- no way to set such code manually, indicates that the connection was lost (no close frame).
->>>>>>> upstream/master
+- `1006` -- `1000` 같은 코드를 수동으로 설정할 수 없을 때 사용하고, 커넥션이 유실되었음(no close frame)을 의미함
 
 이외의 코드는 다음과 같습니다.
 
-- `1001` -- 연결 주체 중 한쪽이 떠남(예: 서버 셧다운, 부라우저에서 페이지 종료)
+- `1001` -- 연결 주체 중 한쪽이 떠남(예: 서버 셧다운, 브라우저에서 페이지 종료)
 - `1009` -- 메시지가 너무 커서 처리하지 못함
 - `1011` -- 서버 측에서 비정상적인 에러 발생
 - ...기타 등등...
 
 코드 전체 목록은 [RFC6455, §7.4.1](https://tools.ietf.org/html/rfc6455#section-7.4.1)에서 확인할 수 있습니다.
 
-<<<<<<< HEAD
-웹소켓 코드는 언뜻 보기엔 HTTP 코드 같아 보이지만 실제론 다릅니다. 특히 `1000`보다 작은 값은 예약 값이여서 작은 숫자를 설정하려 하면 에러가 발생합니다. 
-=======
-WebSocket codes are somewhat like HTTP codes, but different. In particular, codes lower than `1000` are reserved, there'll be an error if we try to set such a code.
->>>>>>> upstream/master
+웹소켓 코드는 언뜻 보기에 HTTP 코드 같아 보이지만 서로 다릅니다. 특히 `1000`보다 작은 코드는 예약되어 있어서 이런 코드를 설정하려고 하면 에러가 발생합니다.
 
 ```js
-// 사례: 커넥현 유실
+// 사례: 커넥션 유실
 socket.onclose = event => {
   // event.code === 1006
   // event.reason === ""
@@ -330,7 +290,7 @@ HTML에선 메시지를 보낼 때 사용할 `<form>`과 수신받을 메시지�
 
 자바스크립트론 다음 세 가지 기능을 구현해야 합니다.
 1. 커넥션 생성
-2. form 제출 -- `socket.send(message)`를 사용해 message 전송
+2. 폼 제출 -- `socket.send(message)`를 사용해 메시지 전송
 3. 메시지 수신 처리 -- 수신한 메시지는 `div#messages`에 추가
 
 코드는 다음과 같습니다.
@@ -362,7 +322,7 @@ socket.onmessage = function(event) {
 
 1. `clients = new Set()`을 만듭니다 -- 소켓 집합입니다.
 2. 수락된 각 웹소켓마다, 집합 `clients.add(socket)`에 추가하고 메시지를 받기 위해 `message` 이벤트 리스너를 설정합니다.
-3. 메시지를 받으면: 클라이언트를 순회하며 모두에게 보냅니다.
+3. 메시지를 받으면 클라이언트를 순회하며 모두에게 보냅니다.
 4. 커넥션이 종료되면 `clients.delete(socket)`을 호출합니다.
 
 ```js
@@ -372,7 +332,7 @@ const wss = new ws.Server({noServer: true});
 const clients = new Set();
 
 http.createServer((req, res) => {
-  // 여기서는 웹소켓 연결만 처리합니다.
+  // 여기서는 웹소켓 커넥션만 처리합니다.
   // 실제 프로젝트라면 웹소켓이 아닌 요청을 처리하는 다른 코드도 있을 것입니다.
   wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect);
 });
