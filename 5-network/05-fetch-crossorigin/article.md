@@ -233,7 +233,7 @@ let response = await fetch('https://site.com/service.json', {
 참고로 위 요청이 안전하지 않은 요청으로 분류되는 데는 세 가지 이유가 있습니다.
 - `PATCH` 메서드를 사용하고 있습니다.
 - `Content-Type`이 `application/x-www-form-urlencoded`나 `multipart/form-data`, `text/plain`이 아닙니다.
-- 비표준 헤더 `API-Key`를 사용합니다.
+- 안전하지 않은 헤더 `API-Key`를 사용합니다.
 
 ### 1단계(preflight 요청)
 
