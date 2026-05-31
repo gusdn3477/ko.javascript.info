@@ -91,7 +91,7 @@ let source = new EventSource("https://another-site.com/events", {
 
 이 과정을 신경 쓰지 않아도 되므로 아주 편리합니다.
 
-재연결 사이에는 작은 지연 시간이 존재하며, 기본값은 몇 초 정도입니다.
+재연결 사이에는 기본적으로 몇 초 정도의 짧은 지연 시간이 있습니다.
 
 서버는 응답에서 `retry:`를 사용해 권장 지연 시간을 밀리초 단위로 설정할 수 있습니다.
 
@@ -186,7 +186,7 @@ data: Bob
 
 ```js
 eventSource.addEventListener('join', event => {
-  alert(`참가: ${event.data}`);
+  alert(`입장: ${event.data}`);
 });
 
 eventSource.addEventListener('message', event => {
@@ -219,7 +219,7 @@ eventSource.addEventListener('leave', event => {
 
 실무의 많은 애플리케이션에서는 `EventSource`의 기능만으로도 충분합니다.
 
-모든 모던 브라우저에서 지원합니다. IE는 지원하지 않습니다.
+IE를 제외한 모든 모던 브라우저에서 지원합니다.
 
 문법은 다음과 같습니다.
 
