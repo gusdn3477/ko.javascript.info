@@ -66,7 +66,7 @@ eventSource.onmessage = function(event) {
 
 ### 크로스 오리진 요청
 
-`EventSource`는 `fetch`나 다른 네트워크 메서드와 마찬가지로 크로스 오리진 요청을 지원합니다. 어떤 URL이든 사용할 수 있습니다.
+`EventSource`는 `fetch` 등과 마찬가지로 어떤 URL로든 크로스 오리진 요청을 보낼 수 있습니다.
 
 ```js
 let source = new EventSource("https://another-site.com/events");
