@@ -2,38 +2,38 @@
 <script>
 let eventSource;
 
-function start() { // when "Start" button pressed
+function start() { // "시작" 버튼을 눌렀을 때
   if (!window.EventSource) {
-    // IE or an old browser
-    alert("The browser doesn't support EventSource.");
+    // IE 또는 구형 브라우저
+    alert("이 브라우저는 EventSource를 지원하지 않습니다.");
     return;
   }
 
   eventSource = new EventSource('digits');
 
   eventSource.onopen = function(e) {
-    log("Event: open");
+    log("이벤트: open");
   };
 
   eventSource.onerror = function(e) {
-    log("Event: error");
+    log("이벤트: error");
     if (this.readyState == EventSource.CONNECTING) {
-      log(`Reconnecting (readyState=${this.readyState})...`);
+      log(`재연결 중입니다(readyState=${this.readyState})...`);
     } else {
-      log("Error has occured.");
+      log("에러가 발생했습니다.");
     }
   };
 
   eventSource.addEventListener('bye', function(e) {
-    log("Event: bye, data: " + e.data);
+    log("이벤트: bye, 데이터: " + e.data);
   });
 
   eventSource.onmessage = function(e) {
-    log("Event: message, data: " + e.data);
+    log("이벤트: message, 데이터: " + e.data);
   };
 }
 
-function stop() { // when "Stop" button pressed
+function stop() { // "중지" 버튼을 눌렀을 때
   eventSource.close();
   log("eventSource.close()");
 }
@@ -44,7 +44,7 @@ function log(msg) {
 }
 </script>
 
-<button onclick="start()">Start</button> Press the "Start" to begin.
+<button onclick="start()">시작</button> 시작하려면 "시작"을 누르세요.
 <div id="logElem" style="margin: 6px 0"></div>
 
-<button onclick="stop()">Stop</button> "Stop" to finish.
+<button onclick="stop()">중지</button> 끝내려면 "중지"를 누르세요.
